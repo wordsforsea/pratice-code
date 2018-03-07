@@ -1,0 +1,53 @@
+package top.xzit;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
+//需求：为了复习的方便，我需要把视频文件里所有的总结视屏放到一个文件夹中，
+//手动复制没有意思，用之前学习的知识，回顾与实用并存
+//可能用到的知识点  文件的遍历 文件读写   对字符串的操作  流 递归？
+//步骤  
+//1.先获取指定目录下所有的文件名
+//2.判断是否以.avi结尾
+//3.对获取的字符串进行操作，匹配含有总结的视频文件
+// 路径 ：F:\java
+public class copyFileFirstVersion {
+	public static void main(String[] args) throws IOException{
+		File f = new File("F:\\java");
+		fileName(f);
+		//copyFile(); 用一下自动功能
+	}
+
+	private static void copyFile(File file) throws IOException{
+		// TODO Auto-generated method stub
+		BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
+		BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(
+				new File("f:\\demo"+file.getName())));
+	}
+
+	private static void fileName(File f) throws IOException{
+		// TODO Auto-generated method stub
+		File[] fileArray = f.listFiles();//以file数组来接受 然后判断是否是文件夹
+		for(File file:fileArray) {
+			if(!(file.isDirectory())) {
+				//说明这部分是文件，可以后续操作
+				if(file.getName().endsWith("总结.avi")) {
+					System.out.println(file.getAbsolutePath());//ok 能把所有的文件都遍历到了
+					//对已经获得的文件进行复制
+					copyFile(file);
+				}
+				//copyFile(file);
+			}else {
+				fileName(file);
+			}
+		}
+	}
+
+	
+}
